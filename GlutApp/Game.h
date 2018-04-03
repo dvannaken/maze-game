@@ -58,9 +58,9 @@ public:
 			inci++;
 		}
 	}
-	Game(const string file, int size) {
+	Game(const string file) {
 		win = 0;
-		map = new Map(file, size);
+		map = new Map(file);
 		
 		if (map->isValid()) {
 			std::cout << "valid map" << std::endl;
@@ -161,7 +161,6 @@ public:
 	}
 	
 	void refresh() {
-		bool error = false;
 		for (int i = 0; i < map->getSize(); i++) {
 			for (int j = 0; j < map->getSize(); j++) {
 				char **p = map->getMap();
@@ -186,12 +185,11 @@ public:
 					board[i][j]->setBlue(0.0);
 				}
 				else {
-					error = true;
+					std::cout << "map error, can't refresh" << std::endl;
+					break;
 				}
 			}
 		}
-		if (error)
-			std::cout << "map error, can't refresh" << std::endl;
 	}
 	
 	void onClick(float mx, float my) {}
@@ -199,19 +197,15 @@ public:
 		if (map->isValid()) {
 			switch (key) {
 			case 'w':
-				std::cout << "w" << std::endl;
 				win = map->movePos( hero, Vec<int>(-1,0) );
 				break;
 			case 'a':
-				std::cout << "a" << std::endl;
 				win = map->movePos( hero, Vec<int>(0,-1) );
 				break;
 			case 's':
-				std::cout << "s" << std::endl;
 				win = map->movePos( hero, Vec<int>(1,0) );
 				break;
 			case 'd':
-				std::cout << "d" << std::endl;
 				win = map->movePos( hero, Vec<int>(0,1) );
 				break;
 			}

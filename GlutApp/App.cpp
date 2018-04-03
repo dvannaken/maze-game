@@ -5,44 +5,44 @@ App::App(const char* label, int x, int y, int w, int h): GlutApp(label, x, y, w,
     mx = 0.0;
     my = 0.0;
 	
-	game = new Game("../includes/map3.txt", 10);
+	game = new Game("../includes/map3.txt");
 }
 
 void App::draw() {
-	if (!game->isWon()) {
-		// Clear the screen
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		// Set background color to black
-		glClearColor(0.0, 0.0, 0.0, 1.0);
-		
-		// Set up the transformations stack
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		
-		game->refresh();
-		
-		for (int i = 0; i < game->getBoardSize(); i++) {
-			for (int j = 0; j < game->getBoardSize(i); j++) {
-				glColor3d( game->getBoardRed(i,j), game->getBoardGreen(i,j), game->getBoardBlue(i,j) );
-				glPolygonMode(GL_FRONT, GL_FILL);
-				glBegin(GL_POLYGON);
+	game->refresh();
+	
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	// Set background color to black
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	
+	// Set up the transformations stack
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	for (int i = 0; i < game->getBoardSize(); i++) {
+		for (int j = 0; j < game->getBoardSize(i); j++) {
+			glColor3d( game->getBoardRed(i,j), game->getBoardGreen(i,j), game->getBoardBlue(i,j) );
+			glPolygonMode(GL_FRONT, GL_FILL);
+			glBegin(GL_POLYGON);
 
-				glVertex2f(game->getBoardX(i,j), game->getBoardY(i,j));
-				glVertex2f(game->getBoardX(i,j) + game->getBoardWidth(i,j), game->getBoardY(i,j));
-				glVertex2f(game->getBoardX(i,j) + game->getBoardWidth(i,j), game->getBoardY(i,j) - game->getBoardHeight(i,j));
-				glVertex2f(game->getBoardX(i,j), game->getBoardY(i,j) - game->getBoardHeight(i,j));
+			glVertex2f(game->getBoardX(i,j), game->getBoardY(i,j));
+			glVertex2f(game->getBoardX(i,j) + game->getBoardWidth(i,j), game->getBoardY(i,j));
+			glVertex2f(game->getBoardX(i,j) + game->getBoardWidth(i,j), game->getBoardY(i,j) - game->getBoardHeight(i,j));
+			glVertex2f(game->getBoardX(i,j), game->getBoardY(i,j) - game->getBoardHeight(i,j));
 
-				glEnd();
-			}
+			glEnd();
 		}
-		
-		// We have been drawing everything to the back buffer
-		// Swap the buffers to see the result of what we drew
-		glFlush();
-		glutSwapBuffers();
 	}
-	else {
+	
+	// We have been drawing everything to the back buffer
+	// Swap the buffers to see the result of what we drew
+	glFlush();
+	glutSwapBuffers();
+
+	if (game->isWon()) {
+		system("PAUSE");
 		exit(0);
 	}
 }

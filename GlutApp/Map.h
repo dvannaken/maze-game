@@ -40,21 +40,22 @@ public:
 		reader.close();
 	}
 
-	Map(const string file, int size) {
-		this->size = size;
+	Map(const string file) {
 		fstream reader;
 		string word;
 		
-		grid = new char*[size];
-		for (int i = 0; i < size; i++) {
-			grid[i] = new char[size];
-			for (int j = 0; j < size; j++) {
-				grid[i][j] = 'p';
-			}
-		}
-		
 		reader.open(file, ios::in);
 		if (reader.is_open()) {
+			reader >> size;
+			
+			grid = new char*[size];
+			for (int i = 0; i < size; i++) {
+				grid[i] = new char[size];
+				for (int j = 0; j < size; j++) {
+					grid[i][j] = 'p';
+				}
+			}
+			
 			for (int i = 0; i < size; i++) {
 				for (int j = 0; j < size; j++) {
 					reader >> word;
